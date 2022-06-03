@@ -16,13 +16,13 @@ namespace Rp3.Test.Data.Repositories
 
         /*
         Ejemplo consultar datos a partir de un procedimiento almacenado 
+        */
 
-        public List<> GetBalance(int accountId, DateTime dateStart, DateTime dateEnd)
+        public List<Balance> GetBalance(int accountId, DateTime dateStart, DateTime dateEnd)
         {
-            return this.DataBase.SqlQuery< >
-                ("EXEC dbo.spGetBalance @AccountId = {0}, @DateStart = {1}, @DateEnd = {2}", accountId, dateStart, dateEnd).ToList();
+            return this.DataBase.SqlQuery<Balance>
+                    ("EXEC dbo.spGetBalance @AccountId = {0}, @DateStart = {1}, @DateEnd = {2}", accountId, dateStart, dateEnd).ToList();
         }
 
-        */
     }
 }

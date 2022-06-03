@@ -1,15 +1,18 @@
-﻿@model List<Rp3.Test.Mvc.Models.TransactionViewModel>
+﻿@model Rp3.Test.Mvc.Models.TransactionViewModel
 @{
+    @*@model Rp3.Test.Mvc.Models.TransactionViewModel*@
     ViewBag.Title = "Home Page";
+    List<Rp3.Test.Mvc.Models.TransactionViewModel> ListModel = ViewBag.Transactions;
 }
+
 
 <div class="jumbotron">
     <h1>Mis Transacciones</h1>
-    <p class="lead">Registro de Ingresos y Gastos</p>    
-    <a class="btn btn-default" href="@Url.Action("Create","Transaction")">Nuevo</a>
+    <p class="lead">Registro de Ingresos y Gastos</p>
+    <a class="btn btn-default" data-toggle="modal" href="#exampleModal" id="button-new">Nuevo</a>
 </div>
 
-<div class="row">    
+<div class="row">
     <table style="width:100%">
         <thead>
             <tr>
@@ -19,15 +22,19 @@
                 <th>Categoría</th>
                 <th>Tipo</th>
                 <th>Descripción</th>
+                <th>Persona</th>
                 <th>Valor</th>
                 <th>Notas</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in ListModel)
             {
             <tr>
-                <td><a class="btn btn-primary" href="@Url.Action("Edit", new { id = item.TransactionId })">Editar</a></td>                
+                <td>
+                    <a class="btn btn-primary" href="/Transaction?transactionId=@item.TransactionId">Editar</a>
+                    @*@Html.ActionLink("Editar", "Index", new { transactionId = item.TransactionId })*@
+                </td>
                 <td>
                     @item.TransactionId
                 </td>
@@ -44,6 +51,9 @@
                     @item.ShortDescription
                 </td>
                 <td>
+                    @item.PersonName
+                </td>
+                <td>
                     @string.Format("{0:c2}", item.Amount)
                 </td>
                 <td>
@@ -53,4 +63,61 @@
             }
         </tbody>
     </table>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Create", "Transaction", FormMethod.Post, new { id = "transaction"}))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="row">
+                        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+                        @Html.TextBoxFor(m => m.TransactionId, "", new { @type = "hidden", @class = "form-control", @id = "transactionId" })
+                        <div class="form-group col-md-6">
+                            <label for="transaction_type_id">Tipo de movimiento</label>
+                            @Html.DropDownList("TransactionTypeId", new SelectList(ViewBag.TransactionTypes, "TransactionTypeId", "Name"), "Please select", new { @class = "form-control", @id = "TransactionTypeId", @required = "true" })
+                            @Html.ValidationMessageFor(m => m.TransactionTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="category_id">Categoria</label>
+                            @Html.DropDownList("CategoryId", new SelectList(ViewBag.Categorias, "CategoryId", "Name"), "Please select", new { @class = "form-control", @id = "CategoryId", @required="true" })
+                            @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="register_date">Fecha de registro</label>
+                            @Html.TextBoxFor(m => m.RegisterDate, new { @Value = Model.RegisterDate.ToString("yyyy-MM-dd"), @type = "date", @class = "form-control", @id = "RegisterDate", @required = "true" })
+                            @Html.ValidationMessageFor(m => m.RegisterDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="short_description">Descripción</label>
+                            @Html.TextBoxFor(m => m.ShortDescription, "", new { @type = "text", @class = "form-control", @id = "ShortDescription", @required = "true" })
+                            @Html.ValidationMessageFor(m => m.ShortDescription, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="amount">Amount</label>
+                            @Html.TextBoxFor(m => m.Amount, "", new { @type = "text", @class = "form-control", @id = "Amount", @required = "true", @onkeypress = "return filterFloat(event,this)" })
+                            @Html.ValidationMessageFor(m => m.Amount)
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="notes">Notas</label>
+                            @Html.TextBoxFor(m => m.Notes, "", new { @type = "text", @class = "form-control", @id = "Notes", @require = "true", @required="true"})
+                            @Html.ValidationMessageFor(m => m.Notes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            }
+        </div>
+    </div>
 </div>

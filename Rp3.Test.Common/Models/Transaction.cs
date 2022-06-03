@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace Rp3.Test.Common.Models
         public DateTime RegisterDate { get; set; }
         public decimal Amount { get; set; }
         public string ShortDescription { get; set; }
-        public string Notes { get; set; }        
+        public string Notes { get; set; }
+        public int PersonId { get; set; }
     }
 }

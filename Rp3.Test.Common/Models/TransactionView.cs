@@ -8,5 +8,6 @@ namespace Rp3.Test.Common.Models
     {        
         public string CategoryName { get; set; }
         public string TransactionType { get; set; }
+        public string PersonName { get; set; }
     }
 }

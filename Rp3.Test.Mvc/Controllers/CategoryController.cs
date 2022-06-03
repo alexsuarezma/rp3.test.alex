@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Rp3.Test.Mvc.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         [HttpGet]

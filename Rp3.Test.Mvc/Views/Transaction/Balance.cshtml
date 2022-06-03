@@ -1,9 +1,64 @@
-﻿@model List<Rp3.Test.Mvc.Models.TransactionViewModel>
+﻿@model Rp3.Test.Common.Models.BalanceView
 @{
     ViewBag.Title = "Balance";
+    List<Rp3.Test.Common.Models.BalanceView> Model = ViewBag.Balances;
 }
 
 <div class="jumbotron">
     <h1>Balance</h1>
-    <p class="lead">Resumen por Categoría</p>    
+    <p class="lead">Resumen por Categoría</p>
 </div>
+
+@using (Html.BeginForm("Balance", "Transaction", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label for="transaction_type_id">Tipo de movimiento</label>
+            @Html.DropDownList("AccountId", new SelectList(ViewBag.TransactionTypes, "TransactionTypeId", "Name"), new { @class = "form-control", @id = "TransactionTypeId", @required = "true" })
+        </div>
+        <div class="form-group col-md-3">
+            <label for="register_date">Fecha de inicio</label>
+            @Html.TextBoxFor(m => m.dateStart, "", new { @type = "date", @class = "form-control", @id = "dateStart", @required = "true" })
+        </div>
+        <div class="form-group col-md-3">
+            <label for="register_date">Fecha de fin</label>
+            @Html.TextBoxFor(m => m.dateEnd, "", new { @type = "date", @class = "form-control", @id = "dateEnd", @required = "true" })
+        </div>
+        <div class="form-group col-md-3" style="display:flex; align-items:center; justify-content:end;">
+            <button class="btn btn-primary">Generar</button>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            decimal total = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td></td>
+                <td>
+                    @item.Categoria
+                </td>
+                <td>
+                    $ @item.Saldo
+                </td>
+            </tr>
+            total = total + item.Saldo;
+        }
+        <tr>
+            <td colspan="2" align="center">Total</td>
+            <td>$ @total</td>
+        </tr>
+    </tbody>
+</table>

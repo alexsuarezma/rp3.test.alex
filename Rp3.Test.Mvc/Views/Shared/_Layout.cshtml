@@ -9,16 +9,26 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    @{
+        ViewBag.Person = Session["Person"];
+    }
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
+            <div style="width: 100%; display: flex; justify-content: space-between;">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("MVC TEST", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>          
+            <div style="display: flex; align-items:center; gap: 0px 15px;">
+                @if (ViewBag.Person != null)
+                {
+                    <span style="color: white;">@ViewBag.Person.Name</span>
+                    <a class="btn btn-light" href="@Url.Action("closeSesion","Home")">Cambiar Persona</a>
+                }
+            </div>
+            </div>
         </div>
     </div>
     <div class="container body-content">
@@ -31,6 +41,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/scripts/transaction.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>

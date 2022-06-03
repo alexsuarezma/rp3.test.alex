@@ -21,12 +21,29 @@ namespace Rp3.Test.Proxies
 
         private const string UriGetTransactionType = "api/transactionTypeData/get";
 
-        private const string UriGetTransactions = "api/transactionData/get";
+        private const string UriGetBalance = "api/transactionData/Balance";
+        private const string UriGetTransactions = "api/transactionData/get?personId={0}";
+        private const string UriGetTransactionById = "api/transactionData/getById?transactionId={0}";
+        private const string UriInsertTransaction = "api/transactionData/Insert";
+        private const string UriUpdateTransaction = "api/transactionData/Update";
+
+        private const string UriGetPersons = "api/personData/get";
+        private const string UriGetPerson = "api/personData/getById?personId={0}";
 
         /// <summary>
         /// Obtiene el Listado de Tipos de Transacción
         /// </summary>
         /// <returns></returns>
+        public List<Person> GetPersons()
+        {
+            return HttpGet<List<Person>>(UriGetPersons);
+        }
+
+        public Person GetPerson(int personId)
+        {
+            return HttpGet<Person>(UriGetPerson, personId);
+        }
+
         public List<TransactionType> GetTransactionTypes()
         {
             return HttpGet<List<TransactionType>>(UriGetTransactionType);
@@ -75,11 +92,30 @@ namespace Rp3.Test.Proxies
         /// Obtiene el Listado de Transacciones
         /// </summary>
         /// <returns></returns>
-        public List<TransactionView> GetTransactions()
+        public List<TransactionView> GetTransactions(int personId)
         {
-            return HttpGet<List<TransactionView>>(UriGetTransactions);
+            return HttpGet<List<TransactionView>>(UriGetTransactions, personId);
         }
 
+        public bool InsertTransactions(Rp3.Test.Common.Models.Transaction transaction)
+        {
+            return HttpPostAsJson<bool>(UriInsertTransaction, transaction);
+        }
+
+        public bool UpdateTransactions(Rp3.Test.Common.Models.Transaction transaction)
+        {
+            return HttpPostAsJson<bool>(UriUpdateTransaction, transaction);
+        }
+
+        public List<BalanceView> GetBalance(BalanceView balanceView)
+        {
+            return HttpPostAsJson<List<BalanceView>>(UriGetBalance, balanceView);
+        }
+
+        public TransactionView GetTrasanction(int? transactionId)
+        {
+            return HttpGet<TransactionView>(UriGetTransactionById, transactionId);
+        }
 
 
     }

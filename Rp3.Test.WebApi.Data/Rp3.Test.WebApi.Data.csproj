@@ -163,6 +163,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\PersonDataController.cs" />
     <Compile Include="Controllers\TransactionDataController.cs" />
     <Compile Include="Controllers\TransactionTypeDataController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

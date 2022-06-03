@@ -15,6 +15,7 @@ namespace Rp3.Test.Data.Models
         public int TransactionId { get; set; }
         public short TransactionTypeId { get; set; }
         public int CategoryId { get; set; }
+        public int PersonId { get; set; }
         public DateTime RegisterDate { get; set; }
         public string ShortDescription { get; set; }
         public decimal Amount { get; set; }
@@ -25,5 +26,9 @@ namespace Rp3.Test.Data.Models
 
         [ForeignKey("TransactionTypeId")]
         public TransactionType TransactionType { get; set; }
+
+        [ForeignKey("PersonId")]
+        public Person Person { get; set; }
+
     }
 }

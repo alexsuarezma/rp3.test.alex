@@ -101,21 +101,19 @@ namespace Rp3.Test.Mvc.Controllers
             
             var errors = ModelState.SelectMany(x => x.Value.Errors.Select(z => z.Exception));
 
-            if (ModelState.IsValid)
-            {
-                Proxies.Proxy proxy = new Proxies.Proxy();
+
+            Proxies.Proxy proxy = new Proxies.Proxy();
                 
-                if (vm.TransactionId == 0)
-                {
-                    proxy.InsertTransactions(transaction);
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    transaction.TransactionId = vm.TransactionId;
-                    proxy.UpdateTransactions(transaction);
-                    return RedirectToAction(nameof(Index));
-                }
+            if (vm.TransactionId == 0)
+            {
+                proxy.InsertTransactions(transaction);
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                transaction.TransactionId = vm.TransactionId;
+                proxy.UpdateTransactions(transaction);
+                return RedirectToAction(nameof(Index));
             }
 
             return RedirectToAction(nameof(Index));
